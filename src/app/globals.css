@@ -1,0 +1,14 @@
+@import "tailwindcss";
+
+:root {
+  --background: #21458d;
+  --foreground: #000000;
+  --font-geist-sans: 'Geist Sans', sans-serif;
+  --font-geist-mono: 'Geist Mono', monospace;
+}
+
+body {
+  background: var(--background);
+  color: var(--foreground);
+  font-family: var(--font-geist-sans);
+}
