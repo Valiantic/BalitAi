@@ -12,3 +12,182 @@ body {
   color: var(--foreground);
   font-family: var(--font-geist-sans);
 }
+
+/* Root-like Circuit Pattern */
+.circuit-roots {
+  position: absolute;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  opacity: 0.15;
+  overflow: hidden;
+}
+
+/* Main root branches */
+.circuit-roots::before {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 800px;
+  height: 800px;
+  transform: translate(-50%, -50%);
+  background: 
+    /* Central hub */
+    radial-gradient(circle at 50% 50%, white 4px, transparent 5px),
+    
+    /* Main branching paths - like neural networks */
+    conic-gradient(from 0deg at 50% 50%, 
+      transparent 0deg, 
+      white 1deg, 
+      transparent 2deg,
+      transparent 40deg,
+      white 41deg,
+      transparent 42deg,
+      transparent 80deg,
+      white 81deg,
+      transparent 82deg,
+      transparent 120deg,
+      white 121deg,
+      transparent 122deg,
+      transparent 160deg,
+      white 161deg,
+      transparent 162deg,
+      transparent 200deg,
+      white 201deg,
+      transparent 202deg,
+      transparent 240deg,
+      white 241deg,
+      transparent 242deg,
+      transparent 280deg,
+      white 281deg,
+      transparent 282deg,
+      transparent 320deg,
+      white 321deg,
+      transparent 322deg
+    ),
+    
+    /* Secondary branching */
+    conic-gradient(from 20deg at 50% 50%, 
+      transparent 0deg, 
+      white 0.5deg, 
+      transparent 1deg,
+      transparent 60deg,
+      white 60.5deg,
+      transparent 61deg,
+      transparent 120deg,
+      white 120.5deg,
+      transparent 121deg,
+      transparent 180deg,
+      white 180.5deg,
+      transparent 181deg,
+      transparent 240deg,
+      white 240.5deg,
+      transparent 241deg,
+      transparent 300deg,
+      white 300.5deg,
+      transparent 301deg
+    );
+  
+  mask: radial-gradient(circle at 50% 50%, black 30%, transparent 70%);
+  animation: grow-pulse 4s ease-in-out infinite;
+}
+
+/* Secondary root system */
+.circuit-roots::after {
+  content: '';
+  position: absolute;
+  top: 50%;
+  left: 50%;
+  width: 600px;
+  height: 600px;
+  transform: translate(-50%, -50%);
+  background: 
+    /* Smaller branching nodes */
+    radial-gradient(circle at 30% 30%, white 2px, transparent 3px),
+    radial-gradient(circle at 70% 30%, white 2px, transparent 3px),
+    radial-gradient(circle at 30% 70%, white 2px, transparent 3px),
+    radial-gradient(circle at 70% 70%, white 2px, transparent 3px),
+    
+    /* Connecting root fibers */
+    linear-gradient(45deg, transparent 48%, white 49%, white 50%, transparent 51%),
+    linear-gradient(-45deg, transparent 48%, white 49%, white 50%, transparent 51%),
+    linear-gradient(135deg, transparent 48%, white 49%, white 50%, transparent 51%),
+    linear-gradient(-135deg, transparent 48%, white 49%, white 50%, transparent 51%),
+    
+    /* Organic curved connections */
+    radial-gradient(ellipse 200px 50px at 25% 50%, white 1px, transparent 2px),
+    radial-gradient(ellipse 200px 50px at 75% 50%, white 1px, transparent 2px),
+    radial-gradient(ellipse 50px 200px at 50% 25%, white 1px, transparent 2px),
+    radial-gradient(ellipse 50px 200px at 50% 75%, white 1px, transparent 2px);
+  
+  background-size: 
+    150px 150px,
+    150px 150px,
+    150px 150px,
+    150px 150px,
+    80px 80px,
+    80px 80px,
+    80px 80px,
+    80px 80px,
+    300px 100px,
+    300px 100px,
+    100px 300px,
+    100px 300px;
+    
+  mask: radial-gradient(circle at 50% 50%, black 20%, transparent 60%);
+  animation: grow-pulse 6s ease-in-out infinite reverse;
+}
+
+/* Growing and pulsing animation */
+@keyframes grow-pulse {
+  0% {
+    transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+    opacity: 0.1;
+  }
+  25% {
+    transform: translate(-50%, -50%) scale(0.9) rotate(5deg);
+    opacity: 0.2;
+  }
+  50% {
+    transform: translate(-50%, -50%) scale(1) rotate(0deg);
+    opacity: 0.25;
+  }
+  75% {
+    transform: translate(-50%, -50%) scale(1.1) rotate(-5deg);
+    opacity: 0.2;
+  }
+  100% {
+    transform: translate(-50%, -50%) scale(0.8) rotate(0deg);
+    opacity: 0.1;
+  }
+}
+
+/* Additional floating circuit nodes */
+@keyframes float-nodes {
+  0%, 100% {
+    transform: translateY(0px) scale(1);
+    opacity: 0.3;
+  }
+  50% {
+    transform: translateY(-10px) scale(1.1);
+    opacity: 0.6;
+  }
+}
+
+/* Add floating nodes around the main circuit */
+.circuit-roots {
+  background: 
+    radial-gradient(circle at 15% 25%, white 1.5px, transparent 2px),
+    radial-gradient(circle at 85% 25%, white 1.5px, transparent 2px),
+    radial-gradient(circle at 15% 75%, white 1.5px, transparent 2px),
+    radial-gradient(circle at 85% 75%, white 1.5px, transparent 2px),
+    radial-gradient(circle at 50% 15%, white 1px, transparent 1.5px),
+    radial-gradient(circle at 50% 85%, white 1px, transparent 1.5px),
+    radial-gradient(circle at 25% 50%, white 1px, transparent 1.5px),
+    radial-gradient(circle at 75% 50%, white 1px, transparent 1.5px);
+  
+  background-size: 100px 100px;
+  animation: float-nodes 3s ease-in-out infinite;
+}

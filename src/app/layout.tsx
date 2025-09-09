@@ -19,7 +19,7 @@ const poppins = Poppins({
 });
 
 export const metadata: Metadata = {
-  title: "BalitAI",
+  title: "BalitAI - AI News Agent",
   description: "BalitAI - Your AI News Platform for the Latest issues in the Philippines",
   icons: {
     icon: [
