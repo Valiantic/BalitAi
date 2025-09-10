@@ -1,8 +1,8 @@
-import { NewsArticle } from '../types/news';
+import { NewsArticle, RSSItem, NewsSource } from '../types/news';
 import { summarizeWithGemini } from '../lib/gemini';
 
 // Trusted Philippine news sources with backup feeds
-const TRUSTED_SOURCES = [
+const TRUSTED_SOURCES: NewsSource[] = [
   { 
     name: 'Rappler', 
     domain: 'rappler.com', 
@@ -84,8 +84,9 @@ const CORRUPTION_KEYWORDS = [
   'COA', 'audit', 'misuse of funds', 'procurement violation', 'ghost employees'
 ];
 
-async function fetchRSSFeedManual(url: string): Promise<any[]> {
+async function fetchRSSFeedManual(url: string): Promise<RSSItem[]> {
   try {
+    console.log(`Fetching RSS feed from: ${url}`);
     
     const controller = new AbortController();
     const timeoutId = setTimeout(() => controller.abort(), 10000); // 10 second timeout
@@ -117,8 +118,8 @@ async function fetchRSSFeedManual(url: string): Promise<any[]> {
   }
 }
 
-function parseRSSToArticles(rssText: string, sourceUrl: string): any[] {
-  const items: any[] = [];
+function parseRSSToArticles(rssText: string, sourceUrl: string): RSSItem[] {
+  const items: RSSItem[] = [];
   
   try {
     // Clean up the RSS text
@@ -186,7 +187,7 @@ function getDomainFromUrl(url: string): string {
   }
 }
 
-async function tryMultipleFeeds(source: any): Promise<any[]> {
+async function tryMultipleFeeds(source: NewsSource): Promise<RSSItem[]> {
   for (const feedUrl of source.feeds) {
     try {
       const articles = await fetchRSSFeedManual(feedUrl);
@@ -218,7 +219,7 @@ export async function fetchPhilippineCorruptionNews(
     sources.includes(source.domain)
   );
   
-  const allArticles: any[] = [];
+  const allArticles: RSSItem[] = [];
   
   // Fetch from RSS feeds with timeout protection
   const fetchPromises = relevantSources.map(async (source) => {
@@ -226,12 +227,13 @@ export async function fetchPhilippineCorruptionNews(
     try {
       const articles = await Promise.race([
         tryMultipleFeeds(source),
-        new Promise<any[]>((_, reject) => 
+        new Promise<RSSItem[]>((_, reject) => 
           setTimeout(() => reject(new Error('Timeout')), 15000)
         )
       ]);
       return articles;
     } catch (error) {
+      // error is used here for logging
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.warn(`Timeout or error fetching from ${source.name}:`, errorMessage);
       return [];

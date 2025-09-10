@@ -28,3 +28,17 @@ export interface ScanResponse {
   timestamp: string;
   query: string;
 }
+
+export interface RSSItem {
+  title: string;
+  url: string;
+  content: string;
+  publishedAt: string;
+  source: string;
+}
+
+export interface NewsSource {
+  name: string;
+  domain: string;
+  feeds: string[];
+}
