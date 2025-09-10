@@ -1,36 +1,26 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# BalitAI - Philippine Corruption News Agent
 
-## Getting Started
+BalitAI is an AI-powered news scanning application that monitors trusted Philippine news sources for corruption-related content. It uses Google's Gemini AI to analyze and summarize news articles about corruption, graft, and other irregularities in the Philippines.
 
-First, run the development server:
+## Features
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
-```
+- 🤖 **AI-Powered Analysis**: Uses Google Gemini AI to analyze and summarize news content
+- 📰 **Multiple News Sources**: Scans trusted Philippine news outlets including Rappler, Inquirer, Philippine Star, and more
+- 🎯 **Corruption Focus**: Specifically filters for corruption-related keywords and content
+- 📱 **Responsive Design**: Works seamlessly on desktop and mobile devices
+- ⚡ **Real-time Loading**: Shows progress with animated loading modal and video
+- 🔍 **Smart Filtering**: AI determines relevance and confidence scores for articles
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+## Prerequisites
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+- Node.js 18+ 
+- npm, yarn, pnpm, or bun
+- Google Gemini API key
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+## How It Works
 
-## Learn More
-
-To learn more about Next.js, take a look at the following resources:
-
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+1. **Click "AI News Scan"**: Initiates the news scanning process
+2. **RSS Feed Parsing**: Fetches latest articles from multiple trusted Philippine news sources
+3. **AI Content Analysis**: Uses Gemini AI to filter corruption-related content
+4. **Content Summarization**: Generates concise summaries for relevant articles
+5. **Results Display**: Shows filtered articles with AI-generated summaries
