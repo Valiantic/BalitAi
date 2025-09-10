@@ -26,7 +26,7 @@ export default function Home() {
       <MainSection 
         onScanNews={scanNews}
         loading={loading}
-        error={error}
+        error={error} // error is used here as a prop
         onClearError={clearError}
       />
       
