@@ -4,8 +4,8 @@ import React from 'react'
 import Image from 'next/image'
 import Logo from '../../../public/images/logo.png'
 import { Search, AlertCircle } from 'lucide-react'
-import LoadingModal from './modals/LoadingModal'
 import { MainSectionProps } from '../types/mainsection';
+import { useAOS } from '../hooks/useAOS';
 
 const MainSection: React.FC<MainSectionProps> = ({ 
   onScanNews, 
@@ -23,8 +23,12 @@ const MainSection: React.FC<MainSectionProps> = ({
         }
     };
 
+    useAOS();
+
     return (
-        <div className='relative flex flex-col justify-center items-center min-h-screen overflow-hidden'>
+        <div 
+        data-aos="zoom-in"
+        className='relative flex flex-col justify-center items-center min-h-screen overflow-hidden'>
             {/* Root-like Circuit Background */}
             <div className='absolute inset-0 pointer-events-none'>
                 <div className='circuit-roots'></div>
@@ -80,12 +84,6 @@ const MainSection: React.FC<MainSectionProps> = ({
                     </button>
                 </div>
             )}
-
-            {/* Loading Modal */}
-            <LoadingModal 
-                isOpen={loading} 
-                message="Scanning trusted Philippine news sources for corruption-related content..."
-            />
         </div>
     )
 }

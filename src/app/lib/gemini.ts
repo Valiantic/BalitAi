@@ -24,7 +24,7 @@ export async function summarizeWithGemini(content: string): Promise<string> {
     return response.text() || 'No summary available';
   } catch (error) {
     console.error('Error generating summary with Gemini:', error);
-    return 'Summary not available due to processing error';
+    return 'We couldn’t generate a summary at the moment. Something went wrong during processing—please try again shortly.';
   }
 }
 

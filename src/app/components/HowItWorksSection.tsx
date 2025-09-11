@@ -1,10 +1,15 @@
 import React from 'react'
 import { Lightbulb } from 'lucide-react'
 import { cardData } from '../contants/cardData'
+import { useAOS } from '../hooks/useAOS';
 
 const HowItWorksSection = () => {
+  useAOS();
+
   return (
-   <section className='min-h-screen p-4 flex flex-col items-center justify-center'>
+   <section 
+   data-aos="fade-up"
+   className='min-h-screen p-4 flex flex-col items-center justify-center'>
      <div className='flex align-items justify-center mb-4'>
          <h2 className='text-4xl text-white font-bold mb-4'>How It Works</h2>
          <Lightbulb className='inline-block font-bold ml-2 w-12 h-8 text-yellow-500'/>
@@ -19,7 +24,7 @@ const HowItWorksSection = () => {
       {cardData.map(({cardId, title, description, icon: Icon}, index) => (
         <div
         key={cardId}
-        className='bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-shadow duration-300'
+        className='bg-white p-6 rounded-lg shadow-md hover:shadow-xl transition-transform duration-300 transform hover:scale-105'
         >
           <div className='flex flex-col items-center text-center mb-4'>
             <Icon className='w-12 h-12 text-blue-500 mb-2' />

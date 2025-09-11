@@ -32,7 +32,7 @@ const LoadingModal: React.FC<LoadingModalProps> = ({
   if (!isOpen) return null;
 
   return (
-    <div className="fixed inset-0 z-50 flex items-center justify-center bg-black bg-opacity-75 backdrop-blur-sm">
+    <div className="fixed inset-0 z-[9999] flex items-center justify-center bg-black bg-opacity-75 backdrop-blur-sm">
       <div className="bg-gray-900 border border-yellow-500 rounded-lg p-8 max-w-md w-full mx-4 shadow-2xl">
         <div className="flex flex-col items-center text-center">
           {/* Video Player */}
@@ -55,7 +55,7 @@ const LoadingModal: React.FC<LoadingModalProps> = ({
                 alt="BalitAI Logo"
                 width={100}
                 height={100}
-                className="mb-4"
+                className="mb-4 animate-pulse"
             />
 
             {/* Loading Text */}

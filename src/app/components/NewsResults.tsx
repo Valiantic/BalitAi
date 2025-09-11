@@ -1,6 +1,7 @@
 import React from 'react';
 import { NewsArticle } from '../types/news';
 import { ExternalLink, Calendar, Building2, Sparkles } from 'lucide-react';
+import { useAOS } from '../hooks/useAOS';
 
 interface NewsResultsProps { 
   articles: NewsArticle[];
@@ -8,6 +9,8 @@ interface NewsResultsProps {
 }
 
 const NewsResults: React.FC<NewsResultsProps> = ({ articles, onNewScan }) => {
+  useAOS();
+
   if (articles.length === 0) {
     return (
       // No results found message
@@ -51,10 +54,12 @@ const NewsResults: React.FC<NewsResultsProps> = ({ articles, onNewScan }) => {
           </div>
 
           <div className="space-y-6">
-            {articles.map((article) => (
+            {articles.map((article, index) => (
               <div
-                key={article.id}
-                className="bg-gray-800 border border-gray-700 rounded-lg p-6 hover:border-yellow-500 transition-colors"
+                key={article.id}          
+                data-aos="fade-up"
+                data-aos-delay={index * 100}
+                className="bg-gray-800 transition-all duration-300 ease-in-out hover:scale-[1.02] border border-gray-700 rounded-lg p-6 hover:border-yellow-500"
               >
                 <div className="flex items-start justify-between mb-4">
                   <h3 className="text-xl font-semibold text-white leading-tight flex-1 mr-4">
