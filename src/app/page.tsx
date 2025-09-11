@@ -7,6 +7,7 @@ import Footer from "./components/Footer";
 import NewsResults from "./components/NewsResults";
 import LoadingModal from "./components/modals/LoadingModal";
 import { useScanNews } from "./hooks/useScanNews";
+import ScrollToTop from "./components/ScrollToTop";
 
 export default function Home() {
   const { data, loading, error, scanNews, clearError, resetData } = useScanNews();
@@ -50,6 +51,7 @@ export default function Home() {
             </section>
           </>
         )}
+        <ScrollToTop />
          <Footer />
       </div>
        
