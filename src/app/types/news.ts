@@ -35,6 +35,7 @@ export interface RSSItem {
   content: string;
   publishedAt: string;
   source: string;
+  imageUrl?: string;
 }
 
 export interface NewsSource {

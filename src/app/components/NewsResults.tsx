@@ -75,6 +75,21 @@ const NewsResults: React.FC<NewsResultsProps> = ({ articles, onNewScan }) => {
                   </a>
                 </div>
 
+                {/* Add this after the title div and before the metadata div */}
+                {article.imageUrl && (
+                  <div className="mb-4 relative">
+                    <img 
+                      src={article.imageUrl} 
+                      alt={article.title}
+                      className="w-full h-48 object-cover rounded-lg"
+                      loading="lazy"
+                      onError={(e) => {
+                        e.currentTarget.style.display = 'none';
+                      }}
+                    />
+                  </div>
+                )}
+
                 <div className="flex items-center gap-6 text-sm text-gray-400 mb-4">
                   <div className="flex items-center gap-2">
                     <Building2 size={16} />
