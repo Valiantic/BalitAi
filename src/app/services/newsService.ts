@@ -1,30 +1,30 @@
 import { NewsArticle, RSSItem, NewsSource } from '../types/news';
 import { summarizeWithGemini } from '../lib/gemini';
 
-// Trusted Philippine news sources with backup feeds
+// Trusted Philippine news sources with backup feeds - focused on government/politics sections
 const TRUSTED_SOURCES: NewsSource[] = [
   { 
     name: 'Rappler', 
     domain: 'rappler.com', 
     feeds: [
-      'https://www.rappler.com/rss/',
-      'https://www.rappler.com/nation/rss/'
+      'https://www.rappler.com/nation/rss/', // Government and politics focus
+      'https://www.rappler.com/rss/' // General but filters corruption
     ]
   },
   { 
     name: 'Philippine Daily Inquirer', 
     domain: 'inquirer.net', 
     feeds: [
-      'https://newsinfo.inquirer.net/feed',
-      'https://newsinfo.inquirer.net/category/latest-stories/feed'
+      'https://newsinfo.inquirer.net/category/latest-stories/feed',
+      'https://newsinfo.inquirer.net/feed'
     ]
   },
   { 
     name: 'Philippine Star', 
     domain: 'philstar.com', 
     feeds: [
-      'https://www.philstar.com/rss/headlines',
-      'https://www.philstar.com/rss/nation'
+      'https://www.philstar.com/rss/nation', // Nation/politics focus
+      'https://www.philstar.com/rss/headlines'
     ]
   },
   { 
@@ -32,6 +32,78 @@ const TRUSTED_SOURCES: NewsSource[] = [
     domain: 'mb.com.ph', 
     feeds: [
       'https://mb.com.ph/feed/'
+    ]
+  },
+  { 
+    name: 'GMA News Online', 
+    domain: 'gmanetwork.com', 
+    feeds: [
+      'https://www.gmanetwork.com/news/rss/news',
+      'https://www.gmanetwork.com/news/rss/topstories'
+    ]
+  },
+  { 
+    name: 'ABS-CBN News', 
+    domain: 'abs-cbn.com', 
+    feeds: [
+      'https://news.abs-cbn.com/rss/nation',
+      'https://news.abs-cbn.com/rss/latest'
+    ]
+  },
+  { 
+    name: 'The Manila Times', 
+    domain: 'manilatimes.net', 
+    feeds: [
+      'https://www.manilatimes.net/feed'
+    ]
+  },
+  { 
+    name: 'Interaksyon', 
+    domain: 'interaksyon.philstar.com', 
+    feeds: [
+      'https://interaksyon.philstar.com/feed'
+    ]
+  },
+  { 
+    name: 'SunStar', 
+    domain: 'sunstar.com.ph', 
+    feeds: [
+      'https://www.sunstar.com.ph/rss'
+    ]
+  },
+  { 
+    name: 'PTV News', 
+    domain: 'ptvnews.ph', 
+    feeds: [
+      'https://ptvnews.ph/feed'
+    ]
+  },
+  { 
+    name: 'Bombo Radyo', 
+    domain: 'bomboradyo.com', 
+    feeds: [
+      'https://www.bomboradyo.com/feed'
+    ]
+  },
+  { 
+    name: 'DZRH News', 
+    domain: 'dzrhnews.com.ph', 
+    feeds: [
+      'https://dzrhnews.com.ph/feed'
+    ]
+  },
+  { 
+    name: 'One News / News5', 
+    domain: 'onenews.ph', 
+    feeds: [
+      'https://www.onenews.ph/rss'
+    ]
+  },
+  { 
+    name: 'Newswatch Plus', 
+    domain: 'newswatchplus.com', 
+    feeds: [
+      'https://newswatchplus.com/feed'
     ]
   }
 ];
@@ -80,13 +152,38 @@ const MOCK_CORRUPTION_NEWS = [
   }
 ];
 
-// Keywords related to corruption in the Philippines
-const CORRUPTION_KEYWORDS = [
+// Core corruption-related keywords (must contain at least one)
+const CORE_CORRUPTION_KEYWORDS = [
   'corruption', 'graft', 'plunder', 'bribery', 'kickback', 'malversation',
-  'pork barrel', 'DAP', 'PDAF', 'ghost projects', 'overpricing',
-  'Sandiganbayan', 'Ombudsman', 'SALN', 'unexplained wealth',
-  'lifestyle check', 'ill-gotten', 'anomalous', 'irregularities',
-  'COA', 'audit', 'misuse of funds', 'procurement violation', 'ghost employees'
+  'embezzlement', 'fraud', 'scam', 'anomalous', 'irregularities',
+  'misappropriation', 'diversion of funds', 'ghost employees', 'ghost projects',
+  'overpricing', 'overpriced', 'bidding irregularities', 'procurement violation',
+  'misuse of funds', 'ill-gotten', 'unexplained wealth', 'undeclared assets',
+  'money laundering', 'tax evasion', 'customs corruption', 'smuggling',
+  'abuse of power', 'nepotism', 'patronage', 'electoral fraud', 'vote buying'
+];
+
+// Government/judicial corruption institutions (high relevance when present)
+const CORRUPTION_INSTITUTIONS = [
+  'Sandiganbayan', 'Ombudsman', 'COA', 'Commission on Audit',
+  'SALN', 'pork barrel', 'DAP', 'PDAF', 'Blue Ribbon Committee',
+  'shell companies', 'dummy corporations', 'fake receipts', 'ghost deliveries'
+];
+
+// Keywords that indicate NON-corruption news (immediate exclusion)
+const NON_CORRUPTION_KEYWORDS = [
+  'weather', 'typhoon', 'storm', 'rain', 'flood', 'earthquake', 'tsunami', 'volcanic',
+  'sports', 'basketball', 'football', 'volleyball', 'olympics', 'games', 'tournament',
+  'entertainment', 'celebrity', 'movie', 'film', 'music', 'concert', 'show', 'artist',
+  'health', 'vaccine', 'medicine', 'hospital', 'doctor', 'covid', 'virus', 'disease',
+  'technology', 'gadget', 'smartphone', 'computer', 'internet', 'app', 'software',
+  'travel', 'tourism', 'hotel', 'restaurant', 'food', 'recipe', 'cooking',
+  'education', 'school', 'university', 'graduation', 'student', 'exam', 'scholarship',
+  'accident', 'fire', 'rescue', 'emergency', 'disaster relief', 'collision', 'crash',
+  'anniversary', 'celebration', 'festival', 'holiday', 'birthday', 'wedding',
+  'business launch', 'product launch', 'opening ceremony', 'grand opening',
+  'traffic', 'road construction', 'infrastructure project', 'bridge opening',
+  'cultural', 'heritage', 'museum', 'art', 'fashion', 'beauty'
 ];
 
 async function fetchRSSFeedManual(url: string): Promise<RSSItem[]> {
@@ -159,14 +256,20 @@ function parseRSSToArticles(rssText: string, sourceUrl: string): RSSItem[] {
           const imageUrl = imageMatch?.[1] || imageMatch?.[2] || imageMatch?.[3] || imgTagMatch?.[1] || descImageMatch?.[1] || null;
 
           if (title && url) {
-            items.push({
-              title,
-              url,
-              content: description,
-              publishedAt,
-              source: getDomainFromUrl(sourceUrl),
-              imageUrl: imageUrl || undefined
-            });
+            // Pre-filter: Skip articles that are clearly not corruption-related
+            const quickCheck = title + ' ' + description;
+            if (isCorruptionRelated(quickCheck)) {
+              items.push({
+                title,
+                url,
+                content: description,
+                publishedAt,
+                source: getDomainFromUrl(sourceUrl),
+                imageUrl: imageUrl || undefined
+              });
+            } else {
+              console.log(`⚡ Quick filter: Skipping non-corruption article: ${title.substring(0, 50)}...`);
+            }
           }
         }
       } catch (itemError) {
@@ -185,9 +288,46 @@ function parseRSSToArticles(rssText: string, sourceUrl: string): RSSItem[] {
 
 function isCorruptionRelated(text: string): boolean {
   const lowercaseText = text.toLowerCase();
-  return CORRUPTION_KEYWORDS.some(keyword => 
+  
+  // IMMEDIATE EXCLUSION: If it contains any non-corruption keywords, reject it
+  const hasNonCorruptionKeywords = NON_CORRUPTION_KEYWORDS.some(keyword => 
     lowercaseText.includes(keyword.toLowerCase())
   );
+  
+  if (hasNonCorruptionKeywords) {
+    return false; // Immediately exclude non-corruption topics
+  }
+  
+  // STRICT INCLUSION: Must contain at least one core corruption keyword
+  const hasCoreCorruptionKeywords = CORE_CORRUPTION_KEYWORDS.some(keyword => 
+    lowercaseText.includes(keyword.toLowerCase())
+  );
+  
+  // BONUS: Extra relevance for corruption institutions
+  const hasCorruptionInstitutions = CORRUPTION_INSTITUTIONS.some(keyword => 
+    lowercaseText.includes(keyword.toLowerCase())
+  );
+  
+  // Must have either core corruption keywords OR corruption institutions
+  const isStrictlyCorruption = hasCoreCorruptionKeywords || hasCorruptionInstitutions;
+  
+  // Additional strict checks for common false positives
+  if (!isStrictlyCorruption) {
+    return false;
+  }
+  
+  // Extra validation: must not be about general government policy without corruption context
+  const generalPolicyKeywords = ['policy', 'program', 'initiative', 'launch', 'announcement'];
+  const hasGeneralPolicy = generalPolicyKeywords.some(keyword => 
+    lowercaseText.includes(keyword)
+  );
+  
+  // If it's just general policy without corruption keywords, exclude it
+  if (hasGeneralPolicy && !hasCoreCorruptionKeywords) {
+    return false;
+  }
+  
+  return true;
 }
 
 function getDomainFromUrl(url: string): string {
@@ -263,17 +403,76 @@ export async function fetchPhilippineCorruptionNews(
   
   console.log(`Fetched ${allArticles.length} total articles from RSS`);
   
-  // Filter for corruption-related content
-  const corruptionArticles = allArticles.filter(article => 
-    isCorruptionRelated(article.title + ' ' + article.content)
-  );
+  // Balanced corruption filtering - strict but not overly restrictive
+  const corruptionArticles = allArticles.filter(article => {
+    const titleAndContent = article.title + ' ' + article.content;
+    const lowercaseText = titleAndContent.toLowerCase();
+    
+    // Layer 1: Basic corruption check (must pass)
+    const passesBasicCheck = isCorruptionRelated(titleAndContent);
+    
+    if (!passesBasicCheck) {
+      console.log(`✗ Layer 1 filter: Non-corruption article: ${article.title.substring(0, 60)}...`);
+      return false;
+    }
+    
+    // Layer 2: Relaxed false positive check (more lenient)
+    const obviousNonCorruption = [
+      'road opening', 'bridge inauguration', 'ribbon cutting', 'blessing ceremony',
+      'graduation', 'birthday', 'wedding', 'anniversary celebration',
+      'sports tournament', 'basketball game', 'football match',
+      'weather update', 'storm warning', 'typhoon',
+      'entertainment news', 'celebrity gossip', 'movie premiere'
+    ];
+    
+    const hasObviousNonCorruption = obviousNonCorruption.some(keyword => 
+      lowercaseText.includes(keyword)
+    );
+    
+    if (hasObviousNonCorruption) {
+      console.log(`✗ Layer 2 filter: Obviously non-corruption: ${article.title.substring(0, 60)}...`);
+      return false;
+    }
+    
+    // Layer 3: More lenient title check - allow if ANY corruption context exists
+    const titleLower = article.title.toLowerCase();
+    const contentLower = article.content.toLowerCase();
+    
+    // Check if EITHER title OR content has corruption context
+    const titleHasCorruptionContext = CORE_CORRUPTION_KEYWORDS.some(keyword => 
+      titleLower.includes(keyword)
+    ) || CORRUPTION_INSTITUTIONS.some(keyword => 
+      titleLower.includes(keyword)
+    ) || ['investigation', 'charges', 'case', 'probe', 'allegation', 'scandal', 'complaint', 'violation'].some(keyword => 
+      titleLower.includes(keyword)
+    );
+    
+    const contentHasCorruptionContext = CORE_CORRUPTION_KEYWORDS.some(keyword => 
+      contentLower.includes(keyword)
+    ) || CORRUPTION_INSTITUTIONS.some(keyword => 
+      contentLower.includes(keyword)
+    );
+    
+    // Pass if EITHER title OR content has corruption context
+    if (!titleHasCorruptionContext && !contentHasCorruptionContext) {
+      console.log(`✗ Layer 3 filter: Insufficient corruption context: ${article.title.substring(0, 60)}...`);
+      return false;
+    }
+    
+    console.log(`✓ PASSED ALL LAYERS: Corruption article confirmed: ${article.title.substring(0, 60)}...`);
+    return true;
+  });
   
   console.log(`Found ${corruptionArticles.length} corruption-related articles from RSS`);
   
-  // If we don't have enough articles, supplement with mock data
-  if (corruptionArticles.length < 3) {
-    console.log('Adding mock corruption news data to supplement results...');
-    corruptionArticles.push(...MOCK_CORRUPTION_NEWS);
+  // Only use mock data if absolutely NO corruption articles found, and only corruption mock data
+  if (corruptionArticles.length === 0) {
+    console.log('No corruption articles found in RSS feeds. Using mock corruption data as fallback...');
+    corruptionArticles.push(...MOCK_CORRUPTION_NEWS.filter(article => 
+      isCorruptionRelated(article.title + ' ' + article.content)
+    ));
+  } else {
+    console.log(`Using ${corruptionArticles.length} real corruption articles from RSS feeds`);
   }
   
   // Sort by publication date (newest first)
@@ -289,8 +488,33 @@ export async function fetchPhilippineCorruptionNews(
     try {
       console.log(`Processing article: ${article.title.substring(0, 50)}...`);
       
-      // Generate AI summary
-      const summary = await summarizeWithGemini(article.content);
+      // Check if we have enough content for summarization
+      const contentLength = article.content?.trim().length || 0;
+      let summary: string;
+      
+      if (contentLength < 30) {
+        // If content is very short, create an enhanced summary from title and available info
+        const corruptionType = CORE_CORRUPTION_KEYWORDS.find(keyword => 
+          article.title.toLowerCase().includes(keyword)
+        ) || 'corruption';
+        
+        const institution = CORRUPTION_INSTITUTIONS.find(keyword => 
+          article.title.toLowerCase().includes(keyword)
+        );
+        
+        summary = `This ${corruptionType} case involves ${article.source} reporting on important developments in Philippine governance and accountability. `;
+        
+        if (institution) {
+          summary += `The ${institution} appears to be involved in the proceedings. `;
+        }
+        
+        summary += `${article.title} - This ongoing story highlights critical issues in government transparency. Please visit the source for comprehensive coverage and latest updates on this developing corruption case.`;
+        
+        console.log(`Using enhanced title-based summary due to short content (${contentLength} chars)`);
+      } else {
+        // Generate AI summary for articles with sufficient content
+        summary = await summarizeWithGemini(article.content);
+      }
       
       enhancedArticles.push({
         id: `article_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
@@ -317,7 +541,7 @@ export async function fetchPhilippineCorruptionNews(
         url: article.url,
         source: article.source,
         publishedAt: article.publishedAt,
-        summary: 'AI summary temporarily unavailable',
+        summary: 'Summary temporarily unavailable - please visit source for full details.',
         imageUrl: article.imageUrl
       });
     }
