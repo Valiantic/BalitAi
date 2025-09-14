@@ -1,5 +1,6 @@
 import { NewsArticle, RSSItem, NewsSource } from '../types/news';
-import { summarizeWithGemini } from '../lib/gemini';
+import { summarizeWithGemini, enhanceArticleWithAI } from '../lib/gemini';
+import { batchProcessLocations } from '../lib/fastLocationMapping';
 import { CORE_CORRUPTION_KEYWORDS, CORRUPTION_INSTITUTIONS, NON_CORRUPTION_KEYWORDS } from '../contants/newsRestrictions';
 import { TRUSTED_SOURCES } from '../contants/trustedSource';
 import { MOCK_CORRUPTION_NEWS } from '../contants/mockCorruption';
@@ -300,11 +301,27 @@ export async function fetchPhilippineCorruptionNews(
   
   // Take top articles and enhance with AI summaries
   const topArticles = corruptionArticles.slice(0, Math.min(limit, corruptionArticles.length));
+  
+  // Batch process locations first for speed
+  console.log('🗺️ Starting fast location mapping...');
+  const locationResults = await batchProcessLocations(
+    topArticles.map(article => ({
+      id: `temp_${article.title}`,
+      title: article.title,
+      content: article.content
+    }))
+  );
+  
   const enhancedArticles: NewsArticle[] = [];
   
-  for (const article of topArticles) {
+  for (let i = 0; i < topArticles.length; i++) {
+    const article = topArticles[i];
     try {
       console.log(`Processing article: ${article.title.substring(0, 50)}...`);
+      
+      // Get pre-processed location
+      const articleId = `temp_${article.title}`;
+      const geoLocation = locationResults.get(articleId) || undefined;
       
       // Check if we have enough content for summarization
       const contentLength = article.content?.trim().length || 0;
@@ -330,7 +347,7 @@ export async function fetchPhilippineCorruptionNews(
         
         console.log(`Using enhanced title-based summary due to short content (${contentLength} chars)`);
       } else {
-        // Generate AI summary for articles with sufficient content
+        // Generate AI summary only (location already processed)
         summary = await summarizeWithGemini(article.content);
       }
       
@@ -342,11 +359,12 @@ export async function fetchPhilippineCorruptionNews(
         source: article.source,
         publishedAt: article.publishedAt,
         summary,
-        imageUrl: article.imageUrl
+        imageUrl: article.imageUrl,
+        geoLocation
       });
       
       // Shorter delay to improve user experience
-      await new Promise(resolve => setTimeout(resolve, 200));
+      await new Promise(resolve => setTimeout(resolve, 100));
     } catch (error) {
       const errorMessage = error instanceof Error ? error.message : 'Unknown error';
       console.error(`Error processing article ${article.title}:`, errorMessage);
@@ -360,7 +378,8 @@ export async function fetchPhilippineCorruptionNews(
         source: article.source,
         publishedAt: article.publishedAt,
         summary: 'Summary temporarily unavailable - please visit source for full details.',
-        imageUrl: article.imageUrl
+        imageUrl: article.imageUrl,
+        geoLocation: undefined
       });
     }
   }

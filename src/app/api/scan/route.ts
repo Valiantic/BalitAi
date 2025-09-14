@@ -15,7 +15,12 @@ export async function POST(request: NextRequest) {
         'gma.com',
         'philstar.com',
         'manila-times.net',
-        'sunstar.com.ph'
+        'sunstar.com.ph',
+        'ptvnews.ph',
+        'bomboradyo.com',
+        'dzrhnews.com.ph',
+        'onenews.ph',
+        'newswatchplus.com'
       ],
       limit = 10
     } = body;
