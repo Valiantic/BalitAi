@@ -167,7 +167,7 @@ async function tryMultipleFeeds(source: NewsSource): Promise<RSSItem[]> {
           source: source.name
         }));
       }
-    } catch (error) {
+    } catch {
       console.log(`Failed to fetch from ${feedUrl}, trying next...`);
       continue;
     }
