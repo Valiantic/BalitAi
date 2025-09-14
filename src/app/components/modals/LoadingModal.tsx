@@ -11,7 +11,8 @@ const LoadingModal: React.FC<LoadingModalProps> = ({
   const loadingMessages = [
     "• Searching trusted news sources",
     "• Fact-checking articles", 
-    "• Filtering corruption-related news"
+    "• Filtering corruption-related news",
+    "* Tracking corruption news incidents",
   ];
 
   useEffect(() => {

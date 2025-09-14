@@ -14,7 +14,7 @@ const Footer = () => {
             <span className="font-bold text-white">BalitAI</span>
           </div>
           <p className="text-white text-center text-sm text-muted-foreground md:text-left">
-            This is a non-profit, open-source project for demonstration purposes.
+            This is a non-profit project for educational purposes.
             <br />
             Information is summarized by AI and should be verified via source links.
           </p>

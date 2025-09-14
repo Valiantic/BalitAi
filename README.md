@@ -6,7 +6,7 @@ BalitAI is an AI-powered news scanning application that monitors trusted Philipp
 
 - 🤖 **AI-Powered Analysis**: Uses Google Gemini AI to analyze and summarize news content
 - 📰 **Multiple News Sources**: Scans trusted Philippine news outlets including Rappler, Inquirer, Philippine Star, and more
-- 🎯 **Corruption Focus**: Specifically filters for corruption-related keywords and content
+- 📍 **Corruption Map Tracker**: Locates corruption related news based on analyze articles from verified sources
 - 📱 **Responsive Design**: Works seamlessly on desktop and mobile devices
 - ⚡ **Real-time Loading**: Shows progress with animated loading modal and video
 - 🔍 **Smart Filtering**: AI determines relevance and confidence scores for articles
