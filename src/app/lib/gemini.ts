@@ -1,4 +1,6 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { extractLocationFromArticle } from './geolocation';
+import { GeoLocation } from '../types/news';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
@@ -69,13 +71,20 @@ export async function analyzeNewsRelevance(title: string, content: string): Prom
       Title: ${title}
       Content: ${content.substring(0, 1000)}
       
-      Provide a JSON response with:
+      IMPORTANT: Return ONLY valid JSON, no markdown code blocks or extra text.
+      
+      Provide a JSON response with this exact format:
       {
-        "isRelevant": boolean (true if corruption-related),
-        "confidence": number (0-100),
-        "keywords": ["list", "of", "relevant", "keywords"],
-        "category": "string (e.g., 'graft', 'bribery', 'plunder', 'irregularities', 'other')"
+        "isRelevant": true,
+        "confidence": 85,
+        "keywords": ["corruption", "bribery"],
+        "category": "graft"
       }
+      
+      Categories: "graft", "bribery", "plunder", "irregularities", "other"
+      Confidence: 0-100 (how sure you are this is corruption-related)
+      
+      RESPOND WITH ONLY THE JSON OBJECT, NO OTHER TEXT OR FORMATTING.
     `;
 
     const result = await model.generateContent(prompt);
@@ -83,8 +92,25 @@ export async function analyzeNewsRelevance(title: string, content: string): Prom
     const text = response.text();
     
     try {
-      return JSON.parse(text);
-    } catch {
+      // Clean the response text by removing markdown code blocks if present
+      let cleanedText = text.trim();
+      
+      // Remove markdown code blocks (```json ... ``` or ``` ... ```)
+      const codeBlockRegex = /^```(?:json)?\s*([\s\S]*?)\s*```$/;
+      const match = cleanedText.match(codeBlockRegex);
+      if (match) {
+        cleanedText = match[1].trim();
+      }
+      
+      // Also handle cases where there might be extra text before/after JSON
+      const jsonMatch = cleanedText.match(/\{[\s\S]*\}/);
+      if (jsonMatch) {
+        cleanedText = jsonMatch[0];
+      }
+      
+      return JSON.parse(cleanedText);
+    } catch (parseError) {
+      console.error('Error parsing relevance JSON:', parseError);
       // Fallback if JSON parsing fails
       return {
         isRelevant: true,
@@ -100,6 +126,34 @@ export async function analyzeNewsRelevance(title: string, content: string): Prom
       confidence: 50,
       keywords: ['corruption'],
       category: 'other'
+    };
+  }
+}
+
+// New function to extract both summary and location in one call
+export async function enhanceArticleWithAI(
+  title: string, 
+  content: string
+): Promise<{
+  summary: string;
+  geoLocation: GeoLocation | null;
+}> {
+  try {
+    // Run both operations in parallel for better performance
+    const [summary, geoLocation] = await Promise.all([
+      summarizeWithGemini(content),
+      extractLocationFromArticle(title, content)
+    ]);
+
+    return {
+      summary,
+      geoLocation
+    };
+  } catch (error) {
+    console.error('Error enhancing article with AI:', error);
+    return {
+      summary: 'Summary temporarily unavailable - please visit source for full details.',
+      geoLocation: null
     };
   }
 }
