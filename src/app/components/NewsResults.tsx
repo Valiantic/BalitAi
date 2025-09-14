@@ -1,7 +1,9 @@
 import React from 'react';
+import Image from 'next/image';
 import { NewsArticle } from '../types/news';
 import { ExternalLink, Calendar, Building2, Sparkles } from 'lucide-react';
 import { useAOS } from '../hooks/useAOS';
+import Logo from '../../../public/images/logo.png';
 
 interface NewsResultsProps { 
   articles: NewsArticle[];
@@ -81,7 +83,7 @@ const NewsResults: React.FC<NewsResultsProps> = ({ articles, onNewScan }) => {
                     <img 
                       src={article.imageUrl} 
                       alt={article.title}
-                      className="w-full h-48 object-cover rounded-lg"
+                      className="w-full h-68 object-cover rounded-lg"
                       loading="lazy"
                       onError={(e) => {
                         e.currentTarget.style.display = 'none';
@@ -104,11 +106,18 @@ const NewsResults: React.FC<NewsResultsProps> = ({ articles, onNewScan }) => {
                 {article.summary && (
                   <div className="mb-4">
                     <div className='flex items-center'>
-                    <h4 className="text-yellow-500 font-semibold mb-2">AI Summary</h4>
-                     <Sparkles className="inline-block ml-2 mb-2 text-sm text-yellow-500" />
-                    </div>
-                    <p className="text-gray-300 leading-relaxed">
-                      {article.summary}
+                    <Image
+                      src={Logo}
+                      alt="BalitAI Logo"
+                      width={40}
+                      height={40}
+                      className="mb-4"
+                    />
+                      <h4 className="text-yellow-500 font-semibold mb-2">AI Summary</h4>
+                      <Sparkles className="inline-block ml-2 mb-2 text-sm text-yellow-500" />
+                      </div>
+                      <p className="text-gray-300 leading-relaxed">
+                        {article.summary}
                     </p>
                   </div>
                 )}

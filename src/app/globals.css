@@ -191,3 +191,18 @@ body {
   background-size: 100px 100px;
   animation: float-nodes 3s ease-in-out infinite;
 }
+
+/* Logo scaling animation for LoadingModal */
+@keyframes logoScale {
+  0%, 100% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.2);
+  }
+}
+
+.logo-animate {
+  animation: logoScale 2s ease-in-out infinite;
+  transform-origin: center;
+}
