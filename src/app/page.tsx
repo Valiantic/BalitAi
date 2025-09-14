@@ -8,6 +8,7 @@ import NewsResults from "./components/NewsResults";
 import LoadingModal from "./components/modals/LoadingModal";
 import { useScanNews } from "./hooks/useScanNews";
 import ScrollToTop from "./components/ScrollToTop";
+import { MapProvider } from "./contexts/MapContext";
 
 export default function Home() {
   const { data, loading, error, scanNews, clearError, resetData } = useScanNews();
@@ -24,7 +25,7 @@ export default function Home() {
   }, [data, loading]);
 
   return (
-    <>
+    <MapProvider>
       <div className="w-full px-4 py-6 max-w-7xl mx-auto">
         <MainSection 
           onScanNews={scanNews}
@@ -60,6 +61,6 @@ export default function Home() {
         isOpen={loading} 
         message="Scanning trusted Philippine news sources for corruption-related content..."
       />
-    </>
+    </MapProvider>
   );
 }

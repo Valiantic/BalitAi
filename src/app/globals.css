@@ -1,5 +1,111 @@
 @import "tailwindcss";
 
+/* Leaflet Map Styles */
+.corruption-map .leaflet-container {
+  background: #f3f4f6;
+}
+
+.corruption-map .leaflet-popup-content-wrapper {
+  border-radius: 0.5rem;
+  box-shadow: 0 10px 15px -3px rgba(0, 0, 0, 0.1);
+}
+
+.corruption-map .leaflet-popup-content {
+  margin: 0;
+}
+
+.corruption-map .leaflet-popup-tip {
+  background: white;
+}
+
+/* Custom marker styles */
+.custom-corruption-marker {
+  background: transparent !important;
+  border: none !important;
+}
+
+.custom-corruption-marker.selected {
+  animation: pulse-selected 2s infinite;
+  z-index: 1000 !important;
+}
+
+@keyframes pulse-selected {
+  0% { transform: scale(1); }
+  50% { transform: scale(1.1); }
+  100% { transform: scale(1); }
+}
+
+/* Line clamp utility for text overflow */
+.line-clamp-2 {
+  display: -webkit-box;
+  -webkit-line-clamp: 2;
+  line-clamp: 2;
+  -webkit-box-orient: vertical;
+  overflow: hidden;
+}
+
+/* Smooth transitions for map interactions */
+.corruption-map .leaflet-marker-icon {
+  transition: transform 0.2s ease-in-out;
+}
+
+.corruption-map .leaflet-marker-icon:hover {
+  transform: scale(1.1);
+  z-index: 1000;
+}
+
+/* Selected marker animation */
+.custom-corruption-marker.selected {
+  animation: pulse 2s infinite;
+}
+
+@keyframes pulse {
+  0% {
+    transform: scale(1);
+  }
+  50% {
+    transform: scale(1.05);
+  }
+  100% {
+    transform: scale(1);
+  }
+}
+
+/* Map controls styling */
+.corruption-map .leaflet-control-zoom {
+  border: 1px solid #d1d5db;
+  box-shadow: 0 4px 6px -1px rgba(0, 0, 0, 0.1);
+}
+
+.corruption-map .leaflet-control-zoom a {
+  background: white;
+  color: #374151;
+  border: 1px solid #d1d5db;
+}
+
+.corruption-map .leaflet-control-zoom a:hover {
+  background: #f9fafb;
+}
+
+/* Custom scrollbar for popup content */
+.corruption-map .leaflet-popup-content::-webkit-scrollbar {
+  width: 4px;
+}
+
+.corruption-map .leaflet-popup-content::-webkit-scrollbar-track {
+  background: #f3f4f6;
+  border-radius: 2px;
+}
+
+.corruption-map .leaflet-popup-content::-webkit-scrollbar-thumb {
+  background: #9ca3af;
+  border-radius: 2px;
+}
+
+.corruption-map .leaflet-popup-content::-webkit-scrollbar-thumb:hover {
+  background: #4b5563;
+}
+
 :root {
   --background: #21458d;
   --foreground: #000000;
