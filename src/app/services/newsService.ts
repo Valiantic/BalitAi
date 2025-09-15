@@ -1,8 +1,8 @@
 import { NewsArticle, RSSItem, NewsSource } from '../types/news';
 import { summarizeWithGemini } from '../lib/gemini';
-import { CORE_CORRUPTION_KEYWORDS, CORRUPTION_INSTITUTIONS, NON_CORRUPTION_KEYWORDS } from '../contants/newsRestrictions';
-import { TRUSTED_SOURCES } from '../contants/trustedSource';
-import { MOCK_CORRUPTION_NEWS } from '../contants/mockCorruption';
+import { CORE_CORRUPTION_KEYWORDS, CORRUPTION_INSTITUTIONS, NON_CORRUPTION_KEYWORDS } from '../constants/newsRestrictions';
+import { TRUSTED_SOURCES } from '../constants/trustedSource';
+import { MOCK_CORRUPTION_NEWS } from '../constants/mockCorruption';
 
 async function fetchRSSFeedManual(url: string): Promise<RSSItem[]> {
   try {

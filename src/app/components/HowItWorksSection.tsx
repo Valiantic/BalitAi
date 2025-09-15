@@ -1,6 +1,6 @@
 import React from 'react'
 import { Lightbulb } from 'lucide-react'
-import { cardData } from '../contants/cardData'
+import { cardData } from '../constants/cardData'
 import { useAOS } from '../hooks/useAOS';
 
 const HowItWorksSection = () => {
