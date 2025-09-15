@@ -1,6 +1,8 @@
 import { GoogleGenerativeAI } from '@google/generative-ai';
+import { decodeHtmlEntities } from '../utils/decodeHelper';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
+
 
 // Fallback summarization when Gemini API fails
 function createFallbackSummary(title: string, content: string): string {
@@ -60,7 +62,7 @@ function createFallbackSummary(title: string, content: string): string {
       summary = `This corruption-related news involves ${title.toLowerCase()}. ${summary} The case is part of ongoing efforts to address transparency and accountability issues in the Philippines.`;
     }
 
-    return summary.trim();
+    return decodeHtmlEntities(summary.trim());
 
   } catch (error) {
     console.error('Error in fallback summarization:', error);
@@ -105,15 +107,15 @@ export async function summarizeWithGemini(content: string, title: string = ''): 
         summary.toLowerCase().includes('need the text') ||
         summary.toLowerCase().includes('i need') ||
         summary.toLowerCase().includes('please provide')) {
-      return `Limited content available from source. This appears to be corruption-related news involving: ${content.substring(0, 150)}... Please visit the source link for complete details.`;
+      return decodeHtmlEntities(`Limited content available from source. This appears to be corruption-related news involving: ${content.substring(0, 150)}... Please visit the source link for complete details.`);
     }
     
     // Ensure minimum summary length
     if (summary.length < 100) {
-      return `${summary} This corruption case highlights ongoing issues with government transparency and accountability in the Philippines. Further developments are expected as investigations continue.`;
+      return decodeHtmlEntities(`${summary} This corruption case highlights ongoing issues with government transparency and accountability in the Philippines. Further developments are expected as investigations continue.`);
     }
     
-    return summary;
+    return decodeHtmlEntities(summary);
   } catch (error) {
     console.error('Error generating summary with Gemini:', error);
     

@@ -142,6 +142,7 @@ const CorruptionPopup: React.FC<CorruptionPopupProps> = ({ location }) => {
   }
 
   return (
+    // Modal style popup for individual locations
     <div className="max-w-sm p-2">
       <div className="flex items-center gap-2 mb-2">
         {getSeverityIcon(location.severity)}
