@@ -84,7 +84,7 @@ export const useCorruptionLocations = () => {
 
             const corruptionLocation: CorruptionLocation = {
               id: locationId,
-              title: `Corruption in ${cityInfo?.name || locationName}`,
+              title: `Corruption News in ${cityInfo?.name || locationName}`,
               city: cityInfo?.name || locationName,
               province: cityInfo?.province,
               coordinates,
