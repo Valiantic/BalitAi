@@ -1,6 +1,7 @@
 # BalitAI - Philippine Corruption News Agent
 
-BalitAI is an AI-powered news scanning application that monitors trusted Philippine news sources for corruption-related content. It uses Google's Gemini AI to analyze and summarize news articles about corruption, graft, and other irregularities in the Philippines.
+BalitAI is an AI-powered news scanning application that monitors trusted Philippine news sources for corruption-related content. Equip with Corruption Tracker Map to locate places in the Philippines that 
+has corruption related news. Together with Google's Gemini AI to analyze and summarize news articles about corruption, graft, and other irregularities in the Philippines.
 
 ## Features
 
