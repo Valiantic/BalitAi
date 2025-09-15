@@ -111,7 +111,7 @@ const NewsResults: React.FC<NewsResultsProps> = ({ articles, onNewScan }) => {
                 </div>
                 
                 <p className="text-gray-300 text-sm mb-6">
-                  Interactive map showing corruption related news hotspots across the Philippines based on the analyzed news articles.
+                  Interactive map showing corruption related news hotspots across the Philippines based on the analyzed news articles by AI.
                 </p>
 
                 {/* Map Container - Full Width */}

@@ -331,7 +331,7 @@ export async function fetchPhilippineCorruptionNews(
         console.log(`Using enhanced title-based summary due to short content (${contentLength} chars)`);
       } else {
         // Generate AI summary for articles with sufficient content
-        summary = await summarizeWithGemini(article.content);
+        summary = await summarizeWithGemini(article.content, article.title);
       }
       
       enhancedArticles.push({
