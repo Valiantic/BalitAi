@@ -2,7 +2,73 @@ import { GoogleGenerativeAI } from '@google/generative-ai';
 
 const genAI = new GoogleGenerativeAI(process.env.GEMINI_API_KEY!);
 
-export async function summarizeWithGemini(content: string): Promise<string> {
+// Fallback summarization when Gemini API fails
+function createFallbackSummary(title: string, content: string): string {
+  try {
+    // Corruption-related keywords for context
+    const corruptionKeywords = [
+      'corruption', 'graft', 'bribery', 'plunder', 'embezzlement', 'fraud',
+      'illegal', 'irregularities', 'misuse', 'kickback', 'scandal', 'investigate',
+      'charges', 'accused', 'scam', 'stolen', 'fraudulent', 'abuse', 'violations'
+    ];
+
+    // Extract key information
+    const sentences = content.split(/[.!?]+/).filter(s => s.trim().length > 20);
+    const titleWords = title.toLowerCase();
+    
+    // Find sentences with corruption keywords
+    const relevantSentences = sentences.filter(sentence => {
+      const lowerSentence = sentence.toLowerCase();
+      return corruptionKeywords.some(keyword => lowerSentence.includes(keyword));
+    }).slice(0, 3); // Take top 3 relevant sentences
+
+    // Extract amounts/numbers mentioned
+    const amountMatches = content.match(/(?:₱|PHP|peso|million|billion|thousand)[\s\d,.]*/gi);
+    const amounts = amountMatches ? amountMatches.slice(0, 2) : [];
+
+    // Extract names/officials mentioned
+    const namePattern = /\b[A-Z][a-z]+ [A-Z][a-z]+(?:\s[A-Z][a-z]+)?\b/g;
+    const potentialNames = content.match(namePattern)?.slice(0, 3) || [];
+
+    // Build summary
+    let summary = '';
+    
+    if (relevantSentences.length > 0) {
+      summary = relevantSentences.join('. ').substring(0, 400);
+    } else {
+      // Fallback to first few sentences
+      summary = sentences.slice(0, 2).join('. ').substring(0, 300);
+    }
+
+    // Add context about amounts if found
+    if (amounts.length > 0) {
+      summary += ` The case involves ${amounts.join(' and ')}.`;
+    }
+
+    // Add investigation/action context
+    const actionKeywords = ['investigate', 'charge', 'file', 'suspend', 'arrest', 'probe'];
+    const hasAction = actionKeywords.some(keyword => content.toLowerCase().includes(keyword));
+    
+    if (hasAction) {
+      summary += ' Authorities are taking action on this matter.';
+    } else {
+      summary += ' This case highlights ongoing concerns about corruption in Philippine institutions.';
+    }
+
+    // Ensure minimum length and clean up
+    if (summary.length < 100) {
+      summary = `This corruption-related news involves ${title.toLowerCase()}. ${summary} The case is part of ongoing efforts to address transparency and accountability issues in the Philippines.`;
+    }
+
+    return summary.trim();
+
+  } catch (error) {
+    console.error('Error in fallback summarization:', error);
+    return `This article reports on corruption-related developments in the Philippines. The case involves ${title}. Further details are available in the source article. This represents ongoing efforts to address accountability and transparency in Philippine institutions.`;
+  }
+}
+
+export async function summarizeWithGemini(content: string, title: string = ''): Promise<string> {
   try {
     // Check if content is too short or empty
     if (!content || content.trim().length < 30) {
@@ -50,7 +116,10 @@ export async function summarizeWithGemini(content: string): Promise<string> {
     return summary;
   } catch (error) {
     console.error('Error generating summary with Gemini:', error);
-    return 'Detailed summary temporarily unavailable. This article covers important corruption-related developments in the Philippines. Please visit the source link for complete information.';
+    
+    // Use fallback summarization when Gemini fails
+    console.log('Falling back to local summarization...');
+    return createFallbackSummary(title, content);
   }
 }
 
