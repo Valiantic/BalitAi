@@ -78,6 +78,7 @@ export async function summarizeWithGemini(content: string, title: string = ''): 
     }
 
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
+    const cleanContent = decodeHtmlEntities(content);
     
     const prompt = `
       You are a Philippine corruption news analyst. Create a comprehensive 4-5 sentence summary of this corruption news article.
@@ -93,7 +94,7 @@ export async function summarizeWithGemini(content: string, title: string = ''): 
       Create a substantial summary that gives readers a clear understanding of the corruption issue.
       
       Article content:
-      ${content}
+      ${cleanContent}
       
       Provide a detailed, informative summary (4-5 sentences):
     `;
@@ -134,11 +135,14 @@ export async function analyzeNewsRelevance(title: string, content: string): Prom
   try {
     const model = genAI.getGenerativeModel({ model: "gemini-1.5-flash" });
     
+    const cleanTitle = decodeHtmlEntities(title);
+    const cleanContent = decodeHtmlEntities(content.substring(0, 1000));
+    
     const prompt = `
       Analyze this Philippine news article for corruption-related content.
       
-      Title: ${title}
-      Content: ${content.substring(0, 1000)}
+      Title: ${cleanTitle}
+      Content: ${cleanContent}
       
       Provide a JSON response with:
       {
