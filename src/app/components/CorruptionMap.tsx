@@ -49,12 +49,11 @@ const createCustomIcon = (
         `<circle cx="12.5" cy="12.5" r="6" fill="#fff"/>
          <circle cx="12.5" cy="12.5" r="4" fill="${color}"/>`
       }
-      ${isSelected ? `<circle cx="12.5" cy="12.5" r="10" fill="none" stroke="${strokeColor}" stroke-width="1" opacity="0.6"/>` : ''}
     </svg>
   `;
 
   return new L.DivIcon({
-    html: svgIcon,
+    html: `<div class="marker-wrapper">${svgIcon}</div>`,
     className: `custom-corruption-marker ${isSelected ? 'selected' : ''}`,
     iconSize: selectedSize as [number, number],
     iconAnchor: [selectedSize[0] / 2, selectedSize[1]],

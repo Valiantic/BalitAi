@@ -111,8 +111,9 @@ const NewsResults: React.FC<NewsResultsProps> = ({ articles, onNewScan }) => {
                 </div>
                 
                 <p className="text-gray-300 text-sm mb-6">
-                  Interactive map showing corruption related news hotspots across the Philippines based on the analyzed news articles by AI.
+                  Interactive map showing <span className="font-bold">corruption related news</span> hotspots across the Philippines based on the analyzed news articles by AI.
                 </p>
+                
 
                 {/* Map Container - Full Width */}
                 <div className="mb-6">
@@ -121,6 +122,26 @@ const NewsResults: React.FC<NewsResultsProps> = ({ articles, onNewScan }) => {
                     height="500px"
                     className="border border-gray-600 rounded"
                   />
+                </div>
+
+                {/* Interactive Features Info */}
+                <div className="mt-4 p-4 bg-blue-900 bg-opacity-30 border border-blue-700 rounded-lg">
+                  <div className="flex items-start gap-3">
+                    <Sparkles className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
+                    <div>
+                      <h5 className="font-medium text-blue-300 mb-1">Interactive Map Features</h5>
+                      <p className="text-blue-200 text-sm">
+                        Click on any pin to view detailed corruption cases and related articles. 
+                        The map automatically clusters nearby cases and uses color-coding to indicate severity levels.
+                        Zoom in to see individual cases, or zoom out for a broader regional view.
+                      </p>
+                    </div>
+                  </div>
+                </div>
+
+                  {/* Selected Location Details */}
+                <div className="mb-4">
+                  <SelectedLocationViewer />
                 </div>
                 
                 {/* Statistics Panel - Below Map */}
@@ -214,25 +235,6 @@ const NewsResults: React.FC<NewsResultsProps> = ({ articles, onNewScan }) => {
                   </div>
                 </div>
 
-                {/* Selected Location Details */}
-                <div className="mb-4">
-                  <SelectedLocationViewer />
-                </div>
-
-                {/* Interactive Features Info */}
-                <div className="mt-4 p-4 bg-blue-900 bg-opacity-30 border border-blue-700 rounded-lg">
-                  <div className="flex items-start gap-3">
-                    <Sparkles className="w-5 h-5 text-blue-400 mt-0.5 flex-shrink-0" />
-                    <div>
-                      <h5 className="font-medium text-blue-300 mb-1">Interactive Map Features</h5>
-                      <p className="text-blue-200 text-sm">
-                        Click on any pin to view detailed corruption cases and related articles. 
-                        The map automatically clusters nearby cases and uses color-coding to indicate severity levels.
-                        Zoom in to see individual cases, or zoom out for a broader regional view.
-                      </p>
-                    </div>
-                  </div>
-                </div>
               </div>
             </div>
           )}
