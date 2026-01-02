@@ -3,7 +3,9 @@
 import React, { useEffect, useRef } from "react";
 import MainSection from "./components/MainSection";
 import HowItWorksSection from "./components/HowItWorksSection";
+import AIAnalysisGuide from "./components/AIAnalysisGuide";
 import PoliciesSection from "./components/PoliciesSection";
+import AILimitationsNotice from "./components/AILimitationsNotice";
 import Footer from "./components/Footer";
 import NewsResults from "./components/NewsResults";
 import LoadingModal from "./components/modals/LoadingModal";
@@ -42,6 +44,15 @@ export default function Home() {
               articles={data.articles}
               onNewScan={resetData}
             />
+            <section className="w-full">
+              <HowItWorksSection />
+            </section>
+            <section className="w-full">
+              <AIAnalysisGuide />
+            </section>
+            <section className="w-full">
+              <PoliciesSection />
+            </section>
           </div>
         )}
 
@@ -52,10 +63,19 @@ export default function Home() {
               <HowItWorksSection />
             </section>
             <section className="w-full">
+              <AIAnalysisGuide />
+            </section>
+            <section className="w-full">
               <PoliciesSection />
             </section>
           </>
         )}
+
+        {/* AI Limitations Notice - Always show before footer */}
+        <section className="w-full">
+          <AILimitationsNotice />
+        </section>
+
         <ScrollToTop />
         <Footer />
       </div>
