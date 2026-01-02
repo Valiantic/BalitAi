@@ -2,20 +2,20 @@
 
 import React from 'react'
 import Image from 'next/image'
-import Logo from '../../../public/images/logo.png'
+import PhilippineMap from '../../../public/images/philippine_map.png'
 import { Search, AlertCircle } from 'lucide-react'
 import { MainSectionProps } from '../types/mainsection';
 import { useAOS } from '../hooks/useAOS';
 
-const MainSection: React.FC<MainSectionProps> = ({ 
-  onScanNews, 
-  loading, 
-  error, 
-  onClearError 
+const MainSection: React.FC<MainSectionProps> = ({
+    onScanNews,
+    loading,
+    error,
+    onClearError
 }) => {
     const handleScanClick = async () => {
         if (loading) return;
-        
+
         try {
             await onScanNews();
         } catch (err) {
@@ -26,59 +26,74 @@ const MainSection: React.FC<MainSectionProps> = ({
     useAOS();
 
     return (
-        <div 
-        data-aos="zoom-in"
-        className='relative flex flex-col justify-center items-center min-h-screen overflow-hidden'>
-            {/* Root-like Circuit Background */}
+        <div
+            data-aos="zoom-in"
+            className='relative flex flex-col justify-center items-center min-h-screen overflow-hidden bg-gradient-to-b from-[#0a1628] via-[#0f1f3a] to-[#1a2942]'>
+            {/* Animated Philippine Map Background */}
+            <div className='absolute inset-0 pointer-events-none opacity-30 flex items-center justify-center'>
+                <div className='relative w-full h-full max-w-2xl animate-pulse-slow'>
+                    <Image
+                        src={PhilippineMap}
+                        alt='Philippine Map'
+                        fill
+                        className='object-contain'
+                        priority
+                    />
+                </div>
+            </div>
+
+            {/* Animated particles/dots */}
             <div className='absolute inset-0 pointer-events-none'>
-                <div className='circuit-roots'></div>
-            </div>
-            
-            <div className='relative z-10'>
-                <Image
-                src={Logo}
-                alt='BalitAI Logo'
-                width={350}
-                height={320}
-                className='w-55 h-52 sm:w-68 sm:h-68 md:w-[350px] md:h-[320px]'
-                />
+                <div className='floating-particles'></div>
             </div>
 
-            <div className='relative z-10 flex flex-col items-center justify-center mt-2 gap-4'>
-                <h1 className='text-4xl sm:text-4xl md:text-7xl font-bold text-white'>BalitAI</h1>
-                <p className='text-xs sm:text-xs md:text-lg text-white font-poppins underline underline-offset-8 decoration-yellow-500'>
-                    Your <span className='text-yellow-500 font-bold'>AI-powered</span> Philippine Corruption News Agent
+            {/* Main Content */}
+            <div className='relative z-10 flex flex-col items-center justify-center text-center px-4 max-w-5xl'>
+                <h1 className='text-5xl sm:text-6xl md:text-7xl lg:text-8xl font-extrabold text-white mb-6 leading-tight'>
+                    Combat Corruption with<br />
+                    <span className='text-transparent bg-clip-text bg-gradient-to-r from-blue-400 via-cyan-300 to-blue-500'>Truth</span>
+                </h1>
+
+                <p className='text-base sm:text-lg md:text-xl text-gray-300 mb-8 max-w-3xl'>
+                    BalitAI: Your <span className='text-yellow-400 font-semibold'>AI-powered</span> Philippine Corruption News Agent.
                 </p>
-            </div>
 
-            <div className='relative z-10 flex align-items justify-center mt-8'>
-                <button 
+                <p className='text-sm sm:text-base text-gray-400 mb-10 italic'>
+                    Initiate contextual scan of verified news sources
+                </p>
+
+                <button
                     onClick={handleScanClick}
                     disabled={loading}
                     className={`
-                        bg-blue-500 transition-all duration-300 transform 
-                        ${loading ? 'opacity-75 cursor-not-allowed' : 'hover:scale-110 hover:bg-blue-700'} 
-                        border border-2 border-yellow-500 text-xs sm:text-base md:text-2xl 
-                        text-white font-bold py-2 px-4 rounded-full
+                        group relative bg-gradient-to-r from-blue-500 to-blue-600 
+                        transition-all duration-300 transform 
+                        ${loading ? 'opacity-75 cursor-not-allowed scale-95' : 'hover:scale-105 hover:shadow-2xl hover:shadow-blue-500/50'} 
+                        text-base sm:text-lg md:text-xl 
+                        text-white font-bold py-4 px-8 rounded-full
+                        border-2 border-blue-400
                         ${loading ? 'animate-pulse' : ''}
+                        shadow-lg
                     `}
                 >
-                    {loading ? 'Scanning...' : 'AI News Scan'}
-                    <Search className={`inline-block ml-2 text-bold text-yellow-500 ${loading ? 'animate-spin' : ''}`} />
+                    <span className='flex items-center gap-3'>
+                        {loading ? 'Scanning...' : 'AI News Scan'}
+                        <Search className={`w-5 h-5 ${loading ? 'animate-spin' : 'group-hover:-rotate-12 transition-transform'}`} />
+                    </span>
                 </button>
             </div>
 
             {/* Error Display */}
             {error && (
-                <div className='relative z-10 mt-4 p-4 bg-red-900 bg-opacity-80 border border-red-500 rounded-lg max-w-md mx-4'>
+                <div className='relative z-10 mt-8 p-4 bg-red-900/90 backdrop-blur-sm border border-red-500 rounded-lg max-w-md mx-4 shadow-xl'>
                     <div className='flex items-center gap-2 text-red-300'>
-                        <AlertCircle size={16} />
-                        <span className='text-sm font-semibold'>Error</span>
+                        <AlertCircle size={20} />
+                        <span className='text-base font-semibold'>Error</span>
                     </div>
-                    <p className='text-red-200 text-xs mt-1'>{error}</p>
-                    <button 
+                    <p className='text-red-200 text-sm mt-2'>{error}</p>
+                    <button
                         onClick={onClearError}
-                        className='text-yellow-400 text-xs mt-2 hover:underline'
+                        className='text-yellow-400 text-sm mt-3 hover:underline font-medium'
                     >
                         Dismiss
                     </button>
