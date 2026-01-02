@@ -67,7 +67,7 @@ const AIAnalysisGuide: React.FC = () => {
 
                     <p className="text-lg md:text-xl text-gray-300 max-w-3xl mx-auto leading-relaxed">
                         Understanding our automated process helps you judge credibility responsibly.
-                        Here's how BalitAI transforms raw news into actionable intelligence.
+                        Here&apos;s how BalitAI transforms raw news into actionable intelligence.
                     </p>
                 </div>
 

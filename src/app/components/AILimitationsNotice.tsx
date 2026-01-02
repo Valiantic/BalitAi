@@ -49,7 +49,7 @@ const AILimitationsNotice: React.FC = () => {
                         className="bg-gradient-to-r from-yellow-900/40 via-orange-900/40 to-yellow-900/40 backdrop-blur-sm rounded-2xl p-6 md:p-8 border border-yellow-500/30 mb-8"
                     >
                         <p className="text-xl md:text-2xl lg:text-3xl font-bold text-center text-yellow-100 leading-relaxed">
-                            "BalitAI does not replace investigative journalism."
+                            &quot;BalitAI does not replace investigative journalism.&quot;
                         </p>
                     </div>
 
