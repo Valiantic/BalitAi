@@ -3,6 +3,7 @@
 import React, { useEffect, useRef } from "react";
 import MainSection from "./components/MainSection";
 import HowItWorksSection from "./components/HowItWorksSection";
+import PoliciesSection from "./components/PoliciesSection";
 import Footer from "./components/Footer";
 import NewsResults from "./components/NewsResults";
 import LoadingModal from "./components/modals/LoadingModal";
@@ -17,7 +18,7 @@ export default function Home() {
   // Scroll to results when data is available
   useEffect(() => {
     if (data && !loading && resultsRef.current) {
-      resultsRef.current.scrollIntoView({ 
+      resultsRef.current.scrollIntoView({
         behavior: 'smooth',
         block: 'start'
       });
@@ -26,39 +27,42 @@ export default function Home() {
 
   return (
     <MapProvider>
-      <div className="w-full px-4 py-6 max-w-7xl mx-auto">
-        <MainSection 
+      <div className="w-full">
+        <MainSection
           onScanNews={scanNews}
           loading={loading}
           error={error} // error is used here as a prop
           onClearError={clearError}
         />
-        
+
         {/* Show results if we have data and not loading */}
         {data && !loading && (
           <div ref={resultsRef}>
-            <NewsResults 
-              articles={data.articles} 
+            <NewsResults
+              articles={data.articles}
               onNewScan={resetData}
             />
           </div>
         )}
-        
+
         {/* Only show other sections if we haven't scanned or there's no data */}
         {!data && (
           <>
-            <section className="w-full mt-10">
+            <section className="w-full">
               <HowItWorksSection />
+            </section>
+            <section className="w-full">
+              <PoliciesSection />
             </section>
           </>
         )}
         <ScrollToTop />
-         <Footer />
+        <Footer />
       </div>
-       
+
       {/* Loading Modal - Rendered outside container for full viewport coverage */}
-      <LoadingModal 
-        isOpen={loading} 
+      <LoadingModal
+        isOpen={loading}
         message="Scanning trusted Philippine news sources for corruption-related content..."
       />
     </MapProvider>
