@@ -9,9 +9,37 @@ const poppins = Poppins({
   weight: ["400", "600", "700", "800"],
 });
 
+const siteUrl = "https://balita-ai.vercel.app";
+const title = "BalitAI - AI News Agent";
+const description = "BalitAI - Your AI News Platform for the Latest issues in the Philippines";
+
+const structuredData = {
+  "@context": "https://schema.org",
+  "@graph": [
+    {
+      "@type": "Organization",
+      name: "BalitAI",
+      url: `${siteUrl}/`,
+      logo: `${siteUrl}/images/logo.png`,
+      sameAs: ["https://github.com/Valiantic/BalitAi"],
+    },
+    { "@type": "WebSite", name: "BalitAI", url: `${siteUrl}/`, description },
+  ],
+};
+
 export const metadata: Metadata = {
-  title: "BalitAI - AI News Agent",
-  description: "BalitAI - Your AI News Platform for the Latest issues in the Philippines",
+  metadataBase: new URL(siteUrl),
+  title,
+  description,
+  alternates: { canonical: "/" },
+  openGraph: {
+    title,
+    description,
+    url: "/",
+    siteName: "BalitAI",
+    type: "website",
+    images: [{ url: "/images/logo.png", width: 359, height: 318, alt: "BalitAI logo" }],
+  },
   icons: {
     icon: [
       {
@@ -35,6 +63,10 @@ export default function RootLayout({
       <body
         className={poppins.className}
       >
+        <script
+          type="application/ld+json"
+          dangerouslySetInnerHTML={{ __html: JSON.stringify(structuredData) }}
+        />
         {children}
         <Analytics />
       </body>
