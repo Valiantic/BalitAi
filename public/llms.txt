@@ -1,0 +1,7 @@
+# BalitAI
+
+> BalitAI is a non-profit, educational AI news agent that scans trusted Philippine news sources for corruption-related stories, summarizes them with AI, and maps where they happened. Summaries should be verified via the source links.
+
+## Key pages
+- [BalitAI](https://balita-ai.vercel.app/): run a news scan, view the corruption map, and read how it works
+- [Source code](https://github.com/Valiantic/BalitAi): the project's GitHub repository

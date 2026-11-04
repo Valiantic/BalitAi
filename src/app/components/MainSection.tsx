@@ -5,7 +5,6 @@ import Image from 'next/image'
 import PhilippineMap from '../../../public/images/philippine_map.png'
 import { Search, AlertCircle } from 'lucide-react'
 import { MainSectionProps } from '../types/mainsection';
-import { useAOS } from '../hooks/useAOS';
 
 const MainSection: React.FC<MainSectionProps> = ({
     onScanNews,
@@ -23,11 +22,9 @@ const MainSection: React.FC<MainSectionProps> = ({
         }
     };
 
-    useAOS();
 
     return (
         <div
-            data-aos="zoom-in"
             className='relative flex flex-col justify-center items-center min-h-screen overflow-hidden bg-gradient-to-b from-[#0a1628] via-[#0f1f3a] to-[#1a2942]'>
             {/* Animated Philippine Map Background */}
             <div className='absolute inset-0 pointer-events-none opacity-30 flex items-center justify-center'>
